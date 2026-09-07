@@ -118,6 +118,57 @@ export async function captureSources({ useMic, useCamera, fps }) {
   return displayStream;
 }
 
+// Menggambar watermark (branding text) pada canvas composite.
+// Mendukung 4 posisi & opacity yang dapat dikonfigurasi di settings.
+function drawWatermark(ctx, width, height) {
+  const wm = State.settings.watermark;
+  if (!wm || !wm.enabled || !wm.text) return;
+
+  const text = wm.text;
+  const fontSize = wm.fontSize || 24;
+  const opacity = Math.min(1, Math.max(0, wm.opacity ?? 0.5));
+  const padding = Math.round(width * 0.02) || 20;
+
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  ctx.font = `600 ${fontSize}px 'Segoe UI', system-ui, sans-serif`;
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#ffffff";
+
+  // Ukur teks untuk penempatan yang akurat.
+  const textWidth = ctx.measureText(text).width;
+  let x, y;
+
+  switch (wm.position) {
+    case "top-left":
+      x = padding;
+      y = padding;
+      break;
+    case "top-right":
+      x = width - textWidth - padding;
+      y = padding;
+      break;
+    case "bottom-left":
+      x = padding;
+      y = height - padding;
+      break;
+    case "bottom-right":
+    default:
+      x = width - textWidth - padding;
+      y = height - padding;
+      break;
+  }
+
+  // Subtle shadow agar teks tetap terbaca di latar terang/gelap.
+  ctx.shadowColor = "rgba(0,0,0,0.6)";
+  ctx.shadowBlur = 8;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
+
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
 // Membangun komposit di canvas offscreen, lalu menampilkannya ke <video>
 // preview melalui captureStream(). Ini memastikan sinkronisasi A/V tetap satu
 // timeline (bukan menggabungkan stream terpisah yang bisa desync).
@@ -160,6 +211,10 @@ export function buildComposite(videoElement) {
       ctx.drawImage(camVideo, x, y, w, h);
       ctx.restore();
     }
+
+    // Watermark overlay (branding) - digambar paling akhir agar selalu di atas.
+    drawWatermark(ctx, canvas.width, canvas.height);
+
     requestAnimationFrame(draw);
   };
 

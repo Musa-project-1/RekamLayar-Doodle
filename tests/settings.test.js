@@ -57,4 +57,47 @@ describe("settings persistence", () => {
     localStorage.setItem(CONFIG.SETTINGS_KEY, "{not valid json");
     expect(loadSettings().fps).toBe("30");
   });
+
+  it("loadSettings menyediakan default watermark", () => {
+    const s = loadSettings();
+    expect(s.watermark).toBeDefined();
+    expect(s.watermark.enabled).toBe(false);
+    expect(s.watermark.text).toBe("LayarPro");
+    expect(s.watermark.position).toBe("bottom-right");
+    expect(s.watermark.opacity).toBe(0.5);
+    expect(s.watermark.fontSize).toBe(24);
+  });
+
+  it("watermark deep-merge mempertahankan field lama saat upgrade", () => {
+    // Simulasikan data tersimpan dari versi lama tanpa field baru.
+    localStorage.setItem(
+      CONFIG.SETTINGS_KEY,
+      JSON.stringify({ watermark: { enabled: true, text: "Brand X" } })
+    );
+    const s = loadSettings();
+    expect(s.watermark.enabled).toBe(true);
+    expect(s.watermark.text).toBe("Brand X");
+    // Field baru tetap terisi default (tidak hilang).
+    expect(s.watermark.position).toBe("bottom-right");
+    expect(s.watermark.opacity).toBe(0.5);
+    expect(s.watermark.fontSize).toBe(24);
+  });
+
+  it("watermark round-trip lengkap", () => {
+    saveSettings({
+      watermark: {
+        enabled: true,
+        text: "MyBrand",
+        position: "top-left",
+        opacity: 0.8,
+        fontSize: 32
+      }
+    });
+    const s = loadSettings();
+    expect(s.watermark.enabled).toBe(true);
+    expect(s.watermark.text).toBe("MyBrand");
+    expect(s.watermark.position).toBe("top-left");
+    expect(s.watermark.opacity).toBe(0.8);
+    expect(s.watermark.fontSize).toBe(32);
+  });
 });

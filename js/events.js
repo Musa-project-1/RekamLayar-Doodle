@@ -295,10 +295,62 @@ function bindSettingsSave() {
     // Propagate ke media engine agar pickMimeType() pakai yang benar
     Media.setRecordFormat(format);
     State.settings.countdown = get("setting-countdown")?.value || "3";
+
+    // Watermark settings
+    const wm = State.settings.watermark;
+    wm.enabled = get("setting-watermark-enabled")?.checked || false;
+    wm.text = get("setting-watermark-text")?.value || "LayarPro";
+    wm.position = get("setting-watermark-position")?.value || "bottom-right";
+    wm.fontSize = Number(get("setting-watermark-size")?.value) || 24;
+    wm.opacity = (Number(get("setting-watermark-opacity")?.value) || 50) / 100;
+
     saveSettings(State.settings);
     showToast("Pengaturan tersimpan.");
   };
+
   get("setting-resolution")?.addEventListener("change", save);
   get("setting-format")?.addEventListener("change", save);
   get("setting-countdown")?.addEventListener("change", save);
+
+  // ---- Watermark UI wiring ----
+  const wmToggle = get("setting-watermark-enabled");
+  const wmOptions = get("watermark-options");
+
+  // Tampilkan/sembunyikan opsi watermark.
+  if (wmToggle && wmOptions) {
+    wmToggle.addEventListener("change", () => {
+      wmOptions.classList.toggle("hidden", !wmToggle.checked);
+      save();
+    });
+  }
+
+  // Update label opasitas secara live.
+  const opacitySlider = get("setting-watermark-opacity");
+  const opacityLabel = get("watermark-opacity-value");
+  if (opacitySlider && opacityLabel) {
+    opacitySlider.addEventListener("input", () => {
+      opacityLabel.textContent = `${opacitySlider.value}%`;
+    });
+    opacitySlider.addEventListener("change", save);
+  }
+
+  // Save untuk field watermark lainnya.
+  get("setting-watermark-text")?.addEventListener("change", save);
+  get("setting-watermark-position")?.addEventListener("change", save);
+  get("setting-watermark-size")?.addEventListener("change", save);
+}
+
+// Inisialisasi UI watermark dari settings tersimpan.
+export function initWatermarkUI() {
+  const wm = State.settings.watermark;
+  const toggle = get("setting-watermark-enabled");
+  const options = get("watermark-options");
+  if (toggle) toggle.checked = !!wm.enabled;
+  if (options) options.classList.toggle("hidden", !wm.enabled);
+  if (get("setting-watermark-text")) get("setting-watermark-text").value = wm.text || "LayarPro";
+  if (get("setting-watermark-position")) get("setting-watermark-position").value = wm.position || "bottom-right";
+  if (get("setting-watermark-size")) get("setting-watermark-size").value = String(wm.fontSize || 24);
+  const slider = get("setting-watermark-opacity");
+  if (slider) slider.value = String(Math.round((wm.opacity ?? 0.5) * 100));
+  if (get("watermark-opacity-value")) get("watermark-opacity-value").textContent = `${Math.round((wm.opacity ?? 0.5) * 100)}%`;
 }

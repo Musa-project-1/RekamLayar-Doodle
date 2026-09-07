@@ -27,7 +27,14 @@ export const State = {
     fps: "30",
     countdown: "3",
     format: "webm",
-    autoSave: true
+    autoSave: true,
+    watermark: {
+      enabled: false,
+      text: "LayarPro",
+      position: "bottom-right", // top-left | top-right | bottom-left | bottom-right
+      opacity: 0.5,
+      fontSize: 24
+    }
   },
   // Audio source type: 'system', 'mic', atau 'none'.
   audioSourceType: 'none',

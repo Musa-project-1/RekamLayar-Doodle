@@ -8,7 +8,14 @@ const DEFAULTS = {
   fps: "30",
   countdown: "3",
   format: "webm",
-  autoSave: true
+  autoSave: true,
+  watermark: {
+    enabled: false,
+    text: "LayarPro",
+    position: "bottom-right",
+    opacity: 0.5,
+    fontSize: 24
+  }
 };
 
 function safeGet(key, fallback) {
@@ -29,7 +36,11 @@ function safeSet(key, value) {
 }
 
 export function loadSettings() {
-  return { ...DEFAULTS, ...safeGet(CONFIG.SETTINGS_KEY, {}) };
+  const stored = safeGet(CONFIG.SETTINGS_KEY, {});
+  const merged = { ...DEFAULTS, ...stored };
+  // Deep-merge watermark agar field baru tidak hilang saat upgrade versi.
+  merged.watermark = { ...DEFAULTS.watermark, ...(stored.watermark || {}) };
+  return merged;
 }
 
 export function saveSettings(settings) {

@@ -3,7 +3,7 @@
 // ============================================================
 import { State } from "./state.js";
 import { initDom } from "./dom.js";
-import { setupEventListeners } from "./events.js";
+import { setupEventListeners, initWatermarkUI } from "./events.js";
 import { GDrive } from "./gdrive.js";
 import { loadSettings } from "./settings.js";
 import { setupAutoSave } from "./media.js";
@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setupEventListeners();
+    initWatermarkUI();
     setupAutoSave();
     GDrive.init();
     registerServiceWorker();
