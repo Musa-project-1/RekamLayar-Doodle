@@ -3,36 +3,169 @@
 @tailwind utilities;
 
 /* ============================================================
-   LayarPro - custom styles (dark theme elegan)
+   LayarPro - design system (dark theme premium)
    ============================================================ */
 
 @layer base {
-  body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #0B1120;
-    background-image: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(99, 102, 241, 0.15), rgba(0, 0, 0, 0));
-    background-attachment: fixed;
-    color: #E2E8F0;
-    -webkit-font-smoothing: antialiased;
+  :root {
+    --lp-bg: #070B14;
+    --lp-surface: #0D1320;
+    --lp-surface-2: #111A2B;
+    --lp-border: rgba(255, 255, 255, 0.07);
+    --lp-text: #E6EDF6;
+    --lp-muted: #8B98AB;
+    --lp-accent-1: #38BDF8;
+    --lp-accent-2: #6366F1;
+    --lp-accent-3: #A78BFA;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: var(--lp-text);
+    background-color: var(--lp-bg);
+    background-image:
+      radial-gradient(ellipse 70% 55% at 50% -10%, rgba(99, 102, 241, 0.18), transparent 60%),
+      radial-gradient(ellipse 45% 40% at 90% 10%, rgba(56, 189, 248, 0.08), transparent 55%),
+      radial-gradient(ellipse 45% 40% at 8% 90%, rgba(167, 139, 250, 0.07), transparent 55%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.35);
+    color: #FFFFFF;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.22);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); background-clip: content-box; }
+
+  input, select, textarea, button { font-family: inherit; }
 }
 
 @layer components {
+  /* --- Panel kaca (glassmorphism) --- */
   .glass-panel {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(160deg, rgba(17, 26, 43, 0.72), rgba(13, 19, 32, 0.82));
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--lp-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
+  .glass-panel-strong {
+    background: linear-gradient(160deg, rgba(20, 30, 50, 0.9), rgba(11, 16, 28, 0.95));
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid var(--lp-border);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  /* --- Tombol utama dengan gradient & glow --- */
   .btn-glow-primary {
-    background: linear-gradient(135deg, #5A5CE6, #4E50C9);
-    box-shadow: 0 0 15px rgba(90, 92, 230, 0.35);
-    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    background: linear-gradient(135deg, #38BDF8 0%, #6366F1 55%, #8B5CF6 100%);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: box-shadow 0.25s ease, transform 0.25s ease, filter 0.25s ease;
   }
   .btn-glow-primary:hover {
-    background: linear-gradient(135deg, #6A6CF5, #5A5CE6);
-    box-shadow: 0 0 25px rgba(90, 92, 230, 0.6);
+    filter: brightness(1.08);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transform: translateY(-1px);
+  }
+  .btn-glow-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.4);
+  }
+  .btn-glow-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+
+  /* --- Tombol ikon bulat (toolbar) --- */
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: var(--lp-muted);
+    transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  }
+  .btn-icon:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .btn-icon:active { transform: scale(0.94); }
+
+  /* --- Badge status --- */
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+  }
+  .status-dot.recording {
+    background: #F87171;
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.25);
+    animation: pulse-dot 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.7; }
+  }
+
+  /* --- Input & select --- */
+  .field {
+    background: rgba(11, 16, 28, 0.6);
+    border: 1px solid var(--lp-border);
+    border-radius: 0.75rem;
+    color: var(--lp-text);
+    padding: 0.625rem 0.875rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+  }
+  .field:focus {
+    border-color: rgba(99, 102, 241, 0.55);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+  }
+  .field::placeholder { color: #5B6B82; }
+
+  /* --- Overlay modal --- */
+  .modal-backdrop {
+    background: rgba(4, 7, 14, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* --- Animated entrance --- */
+  .animate-enter {
+    animation: enter 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .animate-fade {
+    animation: fade 0.2s ease both;
+  }
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }

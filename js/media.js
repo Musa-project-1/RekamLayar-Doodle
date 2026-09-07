@@ -94,7 +94,7 @@ export function buildComposite(videoElement) {
       const x = canvas.width - w - pad;
       const y = canvas.height - h - pad;
       ctx.save();
-      ctx.fillStyle = "#0F172A";
+      ctx.fillStyle = "#111A2B";
       ctx.strokeStyle = "rgba(99,102,241,0.6)";
       ctx.lineWidth = 3;
       ctx.beginPath();

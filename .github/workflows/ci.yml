@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (syntax check semua JS)
+        run: npm run lint
+
+      - name: Build CSS (Tailwind CLI)
+        run: npm run build:css
+
+      - name: Verify build output
+        run: |
+          test -s dist/styles.css && echo "dist/styles.css OK ($(wc -c < dist/styles.css) bytes)"
+          test -f index.html && echo "index.html OK"
+          test -f manifest.webmanifest && echo "manifest.webmanifest OK"
+
+      - name: Upload CSS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-css
+          path: dist/styles.css
+          retention-days: 7

@@ -77,6 +77,31 @@ npm run build:css
 npm run watch:css
 ```
 
+### Lint (syntax check)
+```bash
+npm run lint
+```
+
+### Regenerasi Ikon (opsional, butuh `sharp`)
+```bash
+npm i -D sharp
+npm run build:icons
+```
+
+---
+
+## 🚀 CI/CD (GitHub Actions)
+
+Repositori ini dilengkapi dua workflow otomatis:
+
+| Workflow | File | Fungsi |
+|----------|------|--------|
+| CI | `.github/workflows/ci.yml` | Lint semua JS + build CSS di setiap push/PR |
+| Deploy | `.github/workflows/deploy.yml` | Auto-deploy ke GitHub Pages setelah push ke `main` |
+
+Untuk mengaktifkan GitHub Pages, buka **Settings > Pages** di repositori
+dan pilih source **"GitHub Actions"**.
+
 ---
 
 ## 🛠️ Keamanan
