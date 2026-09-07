@@ -3,7 +3,7 @@
 // ============================================================
 import { State } from "./state.js";
 import { get } from "./dom.js";
-import { Timer, runCountdown, TimerExtended } from "./timer.js";
+import { Timer, runCountdown } from "./timer.js";
 import * as Media from "./media.js";
 import { GDrive } from "./gdrive.js";
 import { setupNotesDrag, setupCamDrag } from "./drag.js";
@@ -263,10 +263,31 @@ export function setupEventListeners() {
   });
 
   // ---- Notifikasi ----
+  d("btn-notif")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const panel = d("notif-panel");
+    if (!panel) return;
+    const isHidden = panel.classList.contains("hidden");
+    panel.classList.toggle("hidden", !isHidden);
+    panel.classList.toggle("flex", isHidden);
+    d("notif-dot")?.classList.add("hidden");
+  });
+
   d("btn-clear-notif")?.addEventListener("click", () => {
     const list = d("notif-list");
-    if (list) list.innerHTML = "";
+    if (list) list.innerHTML = `<div class="p-4 text-center text-xs text-slate-500">Tidak ada notifikasi baru</div>`;
     d("notif-dot")?.classList.add("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    const panel = d("notif-panel");
+    const btn = d("btn-notif");
+    if (panel && !panel.classList.contains("hidden")) {
+      if (!panel.contains(e.target) && !btn?.contains(e.target)) {
+        panel.classList.add("hidden");
+        panel.classList.remove("flex");
+      }
+    }
   });
 
   // ---- Shortcuts ----
