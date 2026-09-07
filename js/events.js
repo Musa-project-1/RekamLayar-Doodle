@@ -195,6 +195,7 @@ export function setupEventListeners() {
   });
   d("btn-close-history")?.addEventListener("click", () => {
     d("history-modal")?.classList.add("hidden");
+    updateMobileNav("record");
   });
   d("btn-clear-history")?.addEventListener("click", () => {
     wipeHistory();
@@ -211,6 +212,46 @@ export function setupEventListeners() {
   });
   d("btn-close-settings")?.addEventListener("click", () => {
     d("settings-modal")?.classList.add("hidden");
+    updateMobileNav("record");
+  });
+
+  // ---- Mobile Bottom Navigation ----
+  function updateMobileNav(activeKey) {
+    const items = [
+      { id: "mobile-nav-record", key: "record" },
+      { id: "mobile-nav-history", key: "history" },
+      { id: "mobile-nav-settings", key: "settings" }
+    ];
+    items.forEach(({ id, key }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (key === activeKey) {
+        el.className = "flex flex-col items-center justify-center gap-1 text-indigo-400 font-medium text-[11px] transition-colors";
+      } else {
+        el.className = "flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium text-[11px] transition-colors";
+      }
+    });
+  }
+
+  document.getElementById("mobile-nav-record")?.addEventListener("click", () => {
+    updateMobileNav("record");
+    d("history-modal")?.classList.add("hidden");
+    d("settings-modal")?.classList.add("hidden");
+  });
+
+  document.getElementById("mobile-nav-history")?.addEventListener("click", () => {
+    updateMobileNav("history");
+    renderHistory();
+    d("history-modal")?.classList.remove("hidden");
+  });
+
+  document.getElementById("mobile-nav-settings")?.addEventListener("click", () => {
+    updateMobileNav("settings");
+    const s = loadSettings();
+    if (d("setting-resolution")) d("setting-resolution").value = s.resolution;
+    if (d("setting-format")) d("setting-format").value = s.format;
+    if (d("setting-countdown")) d("setting-countdown").value = s.countdown;
+    d("settings-modal")?.classList.remove("hidden");
   });
 
   // ---- Notifikasi ----
