@@ -67,7 +67,7 @@ export const GDrive = {
     if (bar) bar.style.width = "0%";
 
     try {
-      const filename = `LayarPro-${Date.now()}.${CONFIG_EXT()}`;
+      const filename = `Reka-${Date.now()}.${CONFIG_EXT()}`;
       const metadata = {
         name: filename,
         mimeType: State.finalBlob.type || "video/webm"

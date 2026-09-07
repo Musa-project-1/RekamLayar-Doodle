@@ -62,7 +62,7 @@ describe("settings persistence", () => {
     const s = loadSettings();
     expect(s.watermark).toBeDefined();
     expect(s.watermark.enabled).toBe(false);
-    expect(s.watermark.text).toBe("LayarPro");
+    expect(s.watermark.text).toBe("Reka");
     expect(s.watermark.position).toBe("bottom-right");
     expect(s.watermark.opacity).toBe(0.5);
     expect(s.watermark.fontSize).toBe(24);

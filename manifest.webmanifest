@@ -1,7 +1,7 @@
 {
-  "name": "LayarPro - Perekam Layar & Rapat",
-  "short_name": "LayarPro",
-  "description": "Perekam layar dan rapat offline-first dengan dukungan webcam dan Google Drive.",
+  "name": "Reka - Perekam Layar & Kamera",
+  "short_name": "Reka",
+  "description": "Perekam layar dan kamera luring dengan coretan interaktif.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#070B14",

@@ -1,4 +1,4 @@
-# LayarPro - Roadmap & Prioritas Fitur
+# Reka - Roadmap & Prioritas Fitur
 
 > Dokumen ini adalah living roadmap yang mengupdate status semua use case scenario
 > dan gap yang teridentifikasi dari analisis senior developer (2024).

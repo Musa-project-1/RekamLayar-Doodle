@@ -1,7 +1,7 @@
 {
-  "name": "layarpro",
+  "name": "reka",
   "version": "2.0.0",
-  "description": "LayarPro - Perekam layar dan rapat, offline-first dan PWA capable.",
+  "description": "Reka - Perekam layar dan kamera luring dengan coretan interaktif.",
   "type": "module",
   "scripts": {
     "build:css": "tailwindcss -i ./css/input.css -o ./dist/styles.css --minify",

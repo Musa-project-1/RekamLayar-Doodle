@@ -16,9 +16,9 @@ export const CONFIG = {
   // Pastikan "Authorized JavaScript origins" dikunci ke domain Anda.
   GOOGLE_CLIENT_ID: "YOUR_GOOGLE_CLIENT_ID",
   DRIVE_SCOPE: "https://www.googleapis.com/auth/drive.file",
-  DRIVE_FOLDER_NAME: "LayarPro",
-  SETTINGS_KEY: "layarpro_settings",
-  HISTORY_KEY: "layarpro_history"
+  DRIVE_FOLDER_NAME: "Reka",
+  SETTINGS_KEY: "reka_settings",
+  HISTORY_KEY: "reka_history"
 };
 
 // Daftar MIME types per format output (kualitas terbaik lebih dulu).

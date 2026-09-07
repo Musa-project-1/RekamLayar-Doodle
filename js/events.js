@@ -119,7 +119,7 @@ export function setupEventListeners() {
     setRecordingUI(false);
     playBeep("stop");
     addNotification("Rekaman selesai", "Rekaman siap diunduh atau disimpan.");
-    const title = sanitizeFilename("LayarPro-rekaman");
+    const title = sanitizeFilename("Reka-rekaman");
     addHistoryEntry({
       title,
       type: "layar",
@@ -138,7 +138,7 @@ export function setupEventListeners() {
     }
     const a = document.createElement("a");
     a.href = dataUrl;
-    a.download = `LayarPro-screenshot-${timestampString()}.png`;
+    a.download = `Reka-tangkapan-${timestampString()}.png`;
     a.click();
     showToast("Screenshot tersimpan.");
   });
@@ -157,7 +157,7 @@ export function setupEventListeners() {
       return;
     }
     const blob = new Blob([text], { type: "text/plain" });
-    triggerDownload(blob, `LayarPro-catatan-${timestampString()}.txt`);
+    triggerDownload(blob, `Reka-catatan-${timestampString()}.txt`);
   });
   setupNotesDrag(d("notepad-header"), d("floating-notepad"));
 

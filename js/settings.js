@@ -11,7 +11,7 @@ const DEFAULTS = {
   autoSave: true,
   watermark: {
     enabled: false,
-    text: "LayarPro",
+    text: "Reka",
     position: "bottom-right",
     opacity: 0.5,
     fontSize: 24

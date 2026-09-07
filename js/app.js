@@ -51,9 +51,9 @@ function bootstrap() {
     GDrive.init();
     registerServiceWorker();
     
-    console.log("[LayarPro] siap.");
+    console.log("[Reka] siap.");
   } catch (e) {
-    console.error("[LayarPro] Gagal inisialisasi:", e);
+    console.error("[Reka] Gagal inisialisasi:", e);
   }
 }
 

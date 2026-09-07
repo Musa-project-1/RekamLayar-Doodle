@@ -1,6 +1,6 @@
-# LayarPro - Perekam Layar & Rapat (Offline-First)
+# Reka - Perekam Layar & Kamera (Offline-First)
 
-**LayarPro v2.0.0** - Aplikasi perekam layar desktop dengan rekaman webcam picture-in-picture, catatan drag-dan-geser, dan integrasi Google Drive. Dibangun dengan Vanilla JavaScript modular dan Tailwind CSS lokal.
+**Reka v2.0.0** - Aplikasi perekam layar desktop dan seluler dengan rekaman kamera, live doodle anotasi, catatan melayang, dan integrasi Google Drive. Dibangun dengan Vanilla JavaScript modular dan Tailwind CSS lokal.
 
 ---
 

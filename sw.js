@@ -1,7 +1,7 @@
 // ============================================================
 // sw.js - Service worker untuk offline-first (PWA)
 // ============================================================
-const CACHE_NAME = "layarpro-v3";
+const CACHE_NAME = "reka-v1";
 const PRECACHE = [
   "./",
   "./index.html",

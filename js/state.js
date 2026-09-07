@@ -38,7 +38,7 @@ export const State = {
     autoSave: true,
     watermark: {
       enabled: false,
-      text: "LayarPro",
+      text: "Reka",
       position: "bottom-right", // top-left | top-right | bottom-left | bottom-right
       opacity: 0.5,
       fontSize: 24
