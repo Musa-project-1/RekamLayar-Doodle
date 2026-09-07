@@ -9,16 +9,36 @@
 //   - Visualizer gelombang mikrofon.
 
 import { State, AudioState, releaseFinalBlob } from "./state.js";
-import { MIME_TYPES, RECORD_EXTENSION } from "./config.js";
+import { getFormatConfig } from "./config.js";
 import { get } from "./dom.js";
 import { formatBytes, sanitizeFilename, timestampString } from "./utils.js";
 import { showToast } from "./ui.js";
 
+// MIME type + extension aktif untuk sesi ini (ditentukan oleh setting format).
+let activeFormat = "webm";
+
+export function currentExtension() {
+  return getFormatConfig(activeFormat).extension;
+}
+
 function pickMimeType() {
-  for (const t of MIME_TYPES) {
+  const { mimeTypes } = getFormatConfig(activeFormat);
+  for (const t of mimeTypes) {
     if (window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t;
   }
+  // Fallback: jika format yang diminta tidak didukung, pakai webm.
+  const fallback = getFormatConfig("webm").mimeTypes;
+  for (const t of fallback) {
+    if (window.MediaRecorder && MediaRecorder.isTypeSupported(t)) {
+      activeFormat = "webm";
+      return t;
+    }
+  }
   return "";
+}
+
+export function setRecordFormat(format) {
+  activeFormat = getFormatConfig(format) ? format : "webm";
 }
 
 export async function captureSources({ useMic, useCamera, fps }) {
@@ -220,7 +240,7 @@ export function setupAutoSave() {
       try {
         State.mediaRecorder.onstop = () => {
           const blob = new Blob(State.recordedChunks, { type: "video/webm" });
-          const name = `${sanitizeFilename("LayarPro-recovery")}-${timestampString()}.${RECORD_EXTENSION}`;
+          const name = `${sanitizeFilename("LayarPro-recovery")}-${timestampString()}.${currentExtension()}`;
           triggerDownloadSilent(blob, name);
         };
         State.mediaRecorder.stop();

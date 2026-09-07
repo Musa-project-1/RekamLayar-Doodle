@@ -11,12 +11,25 @@ import { renderHistory, addHistoryEntry, wipeHistory } from "./history.js";
 import { loadSettings, saveSettings } from "./settings.js";
 import { showToast, addNotification, playBeep, closeConfirm, triggerDownload } from "./ui.js";
 import { sanitizeFilename, timestampString } from "./utils.js";
-import { RECORD_EXTENSION } from "./config.js";
 
 let recordingInProgress = false;
 
+// Guard terhadap penutupan tab saat merekam (cegah data loss).
+export function isRecording() {
+  return recordingInProgress;
+}
+
+function setupUnloadGuard() {
+  window.addEventListener("beforeunload", (e) => {
+    if (!recordingInProgress) return;
+    e.preventDefault();
+    e.returnValue = ""; // memicu dialog konfirmasi bawaan browser
+  });
+}
+
 export function setupEventListeners() {
   const d = get;
+  setupUnloadGuard();
 
   // ---- Toggle Mic & Camera ----
   d("toggle-mic")?.addEventListener("click", () => {
@@ -157,7 +170,8 @@ export function setupEventListeners() {
   });
   d("btn-download-local")?.addEventListener("click", () => {
     if (!State.finalBlob) return;
-    const name = `${sanitizeFilename("LayarPro-rekaman")}-${timestampString()}.${RECORD_EXTENSION}`;
+    const ext = Media.currentExtension();
+    const name = `${sanitizeFilename("LayarPro-rekaman")}-${timestampString()}.${ext}`;
     triggerDownload(State.finalBlob, name);
   });
   d("btn-save-drive")?.addEventListener("click", () => {
@@ -266,7 +280,10 @@ function setRecordingUI(active) {
 function bindSettingsSave() {
   const save = () => {
     State.settings.resolution = get("setting-resolution")?.value || "default";
-    State.settings.format = get("setting-format")?.value || "webm";
+    const format = get("setting-format")?.value || "webm";
+    State.settings.format = format;
+    // Propagate ke media engine agar pickMimeType() pakai yang benar
+    Media.setRecordFormat(format);
     State.settings.countdown = get("setting-countdown")?.value || "3";
     saveSettings(State.settings);
     showToast("Pengaturan tersimpan.");

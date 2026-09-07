@@ -21,13 +21,37 @@ export const CONFIG = {
   HISTORY_KEY: "layarpro_history"
 };
 
-// Daftar MIME types yang dicoba berurutan (kualitas terbaik lebih dulu).
-export const MIME_TYPES = [
-  "video/webm;codecs=vp9,opus",
-  "video/webm;codecs=vp8,opus",
-  "video/webm;codecs=vp9",
-  "video/webm;codecs=vp8",
-  "video/webm"
-];
+// Daftar MIME types per format output (kualitas terbaik lebih dulu).
+// Browser modern mayoritas mendukung WebM; MP4 (H.264) hanya sebagian
+// (Chrome/Edge via hardware encoder). Fallback otomatis ke webm.
+const FORMAT_CONFIG = {
+  webm: {
+    extension: "webm",
+    mimeTypes: [
+      "video/webm;codecs=vp9,opus",
+      "video/webm;codecs=vp8,opus",
+      "video/webm;codecs=vp9",
+      "video/webm;codecs=vp8",
+      "video/webm"
+    ]
+  },
+  mp4: {
+    extension: "mp4",
+    mimeTypes: [
+      "video/mp4;codecs=h264,aac",
+      "video/mp4;codecs=avc1",
+      "video/mp4"
+    ]
+  }
+};
 
-export const RECORD_EXTENSION = "webm";
+export function getFormatConfig(format = "webm") {
+  return FORMAT_CONFIG[format] || FORMAT_CONFIG.webm;
+}
+
+// Daftar format yang didukung UI (untuk dropdown dinamis).
+export const SUPPORTED_FORMATS = Object.keys(FORMAT_CONFIG);
+
+// Tetap dipertahankan untuk kompatibilitas (default webm).
+export const MIME_TYPES = FORMAT_CONFIG.webm.mimeTypes;
+export const RECORD_EXTENSION = FORMAT_CONFIG.webm.extension;

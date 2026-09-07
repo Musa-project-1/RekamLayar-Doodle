@@ -8,6 +8,17 @@
     <meta name="theme-color" content="#070B14">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <!-- Open Graph & Twitter Card untuk social sharing -->
+    <meta property="og:title" content="LayarPro - Perekam Layar & Rapat">
+    <meta property="og:description" content="Perekam layar dan rapat offline-first dengan webcam dan Google Drive.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="icons/icon-512.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LayarPro - Perekam Layar & Rapat">
+    <meta name="twitter:description" content="Perekam layar offline-first dengan webcam dan Google Drive.">
+    <meta name="twitter:image" content="icons/icon-512.png">
 
     <!-- Font Awesome (CDN; tetap diperlukan untuk ikon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -314,6 +325,7 @@
                                 <label class="block text-slate-400 mb-2 font-medium">Format File Perekaman</label>
                                 <select id="setting-format" class="w-full bg-[#111A2B] border border-white/10 rounded-xl px-4 py-3 text-slate-200 outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer">
                                     <option value="webm">WebM (Sangat Direkomendasikan)</option>
+                                    <option value="mp4">MP4 (H.264 - jika didukung browser)</option>
                                 </select>
                             </div>
                             <div>

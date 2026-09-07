@@ -29,6 +29,9 @@ jobs:
       - name: Lint (syntax check semua JS)
         run: npm run lint
 
+      - name: Unit test (Vitest)
+        run: npm test
+
       - name: Build CSS (Tailwind CLI)
         run: npm run build:css
 

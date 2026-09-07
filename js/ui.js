@@ -2,6 +2,7 @@
 // ui.js - Toast, notifikasi, modal konfirmasi, download, suara
 // ============================================================
 import { get } from "./dom.js";
+import { escapeHtml } from "./utils.js";
 
 let toastTimer = null;
 
@@ -31,11 +32,6 @@ export function addNotification(title, body) {
     `<p class="text-[10px] text-slate-500 mt-1">${time}</p>`;
   list.prepend(item);
   if (dot) dot.classList.remove("hidden");
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
 export function playBeep(type = "start") {
@@ -91,5 +87,3 @@ export function closeConfirm() {
   if (modal) modal.classList.add("hidden");
   window.__confirmCallback = null;
 }
-
-export { escapeHtml };

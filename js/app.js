@@ -7,6 +7,7 @@ import { setupEventListeners } from "./events.js";
 import { GDrive } from "./gdrive.js";
 import { loadSettings } from "./settings.js";
 import { setupAutoSave } from "./media.js";
+import * as Media from "./media.js";
 import { get } from "./dom.js";
 
 function registerServiceWorker() {
@@ -21,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
   try {
     initDom();
     State.settings = { ...State.settings, ...loadSettings() };
+
+    // Terapkan format tersimpan ke media engine.
+    Media.setRecordFormat(State.settings.format || "webm");
 
     // Isi radio FPS dari pengaturan.
     const fps = State.settings.fps;

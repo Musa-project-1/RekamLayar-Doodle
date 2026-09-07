@@ -3,7 +3,7 @@
 // ============================================================
 import { loadHistory, saveHistory, clearHistory } from "./settings.js";
 import { get } from "./dom.js";
-import { formatBytes } from "./utils.js";
+import { formatBytes, escapeHtml } from "./utils.js";
 
 export function renderHistory(filter = "", search = "") {
   const list = get("history-list");
@@ -40,11 +40,6 @@ export function renderHistory(filter = "", search = "") {
       `<p class="text-xs text-slate-500">${it.size} &middot; ${it.source}</p>`;
     list.appendChild(card);
   });
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
 export function addHistoryEntry({ title, type, size, source }) {

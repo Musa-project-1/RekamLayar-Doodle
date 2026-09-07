@@ -8,9 +8,13 @@
     "watch:css": "tailwindcss -i ./css/input.css -o ./dist/styles.css --watch",
     "build": "npm run build:css",
     "lint": "node --check js/*.js && node --check sw.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build:icons": "node scripts/generate-icons.mjs"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.13"
+    "jsdom": "^30.0.1",
+    "tailwindcss": "^3.4.13",
+    "vitest": "^5.0.0"
   }
 }
