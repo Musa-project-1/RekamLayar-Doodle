@@ -27,7 +27,7 @@
 
     <!-- Focal Record Dot (The core recording aperture) -->
     <circle cx="90" cy="76" r="22" fill="#F43F5E"/>
-    <!-- Specular core -->
+    <!-- Subtle specular core -->
     <circle cx="90" cy="76" r="9" fill="#FECDD3"/>
   </g>
 </svg>
