@@ -1,0 +1,66 @@
+@import url('[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)');
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    /* Premium dark background with subtle top glow */
+    background-color: #0B1120;
+    background-image: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(99, 102, 241, 0.15), rgba(0, 0, 0, 0));
+    background-attachment: fixed;
+}
+
+.glass-panel {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-pill {
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+}
+
+.pulse-record {
+    animation: pulse-red 1.5s infinite;
+}
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Custom Elegant Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* Animations */
+.animate-zoom-fade { animation: zoomFade 1s ease-in-out infinite; }
+@keyframes zoomFade {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+.modal-enter {
+    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes modalPop {
+    0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Glowing Button */
+.btn-glow-primary {
+    background: #5A5CE6;
+    box-shadow: 0 0 15px rgba(90, 92, 230, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    transition: all 0.2s ease;
+}
+.btn-glow-primary:hover {
+    background: #4E50C9;
+    box-shadow: 0 0 25px rgba(90, 92, 230, 0.6), inset 0 1px 1px rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+}
