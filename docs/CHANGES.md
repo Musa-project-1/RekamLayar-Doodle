@@ -1,10 +1,10 @@
-# LayarPro Changelog — v2.1.x
+# LayarPro Changelog - v2.1.x
 
-## [2.1.0] — 2024-12-xx (Current Release)
+## [2.1.0] - 2024-12-xx (Current Release)
 
 ### ✨ Features Baru
 
-#### 🎙️ System Audio Capture (P1 — Webinar/Meeting Scenario)
+#### 🎙️ System Audio Capture (P1 - Webinar/Meeting Scenario)
 - **Status**: ✅ DONE by delegating task
 - Mendukung capture audio system (speaker output) via `getDisplayMedia({audio:true})`
 - Fallback otomatis ke microphone jika browser tidak mendukung audio system
@@ -24,11 +24,11 @@
 - Persistensi ke localStorage sesuai preference user
 
 #### ⌨️ Keyboard Shortcuts Lengkap (M3)
-- **Space** — Mulai rekam (idle state only)
-- **P** — Pause/Resume recording *(NEW)*
-- **S** — Stop recording
-- **M** — Toggle microphone on/off *(NEW)*
-- **C** — Toggle camera on/off *(NEW)*
+- **Space** - Mulai rekam (idle state only)
+- **P** - Pause/Resume recording *(NEW)*
+- **S** - Stop recording
+- **M** - Toggle microphone on/off *(NEW)*
+- **C** - Toggle camera on/off *(NEW)*
 - Modal shortcuts updated dengan P shortcut explanation
 
 #### ♿ Accessibility Improvements (L1)
@@ -79,9 +79,9 @@ vitest.config.js  # Configuration
 ### 📚 Documentation
 
 **DOCS CREATED:**
-- `docs/ANALYSIS.md` (6701 bytes) — Full codebase audit dengan 19 bug/gap items
-- `docs/ROADMAP.md` (4926 bytes) — Living roadmap v2.1–v3.0 dengan estimasi
-- `docs/CHANGES.md` (file ini) — Changelog untuk tracking release
+- `docs/ANALYSIS.md` (6701 bytes) - Full codebase audit dengan 19 bug/gap items
+- `docs/ROADMAP.md` (4926 bytes) - Living roadmap v2.1–v3.0 dengan estimasi
+- `docs/CHANGES.md` (file ini) - Changelog untuk tracking release
 
 ### 🌐 Meta Tags & Social Sharing
 

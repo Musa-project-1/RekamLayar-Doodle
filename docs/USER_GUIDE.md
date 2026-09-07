@@ -1,4 +1,4 @@
-# LayarPro — User Guide & FAQ
+# LayarPro - User Guide & FAQ
 
 ## 👋 Welcome to LayarPro
 

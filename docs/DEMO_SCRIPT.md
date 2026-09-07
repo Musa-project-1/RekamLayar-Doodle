@@ -1,4 +1,4 @@
-# LayarPro — Demo Script & Presentation Guide
+# LayarPro - Demo Script & Presentation Guide
 
 ## 🎬 Purpose
 Demo script untuk showcase fitur-fitur utama LayarPro kepada stakeholder/user. Cocok untuk presentation, tutorial video, atau dokumentasi produk.
@@ -48,7 +48,7 @@ Open Chrome (recommended for best WebRTC support):
 **Goal:** Show first impression & modern UI
 
 **Narration:**
->"Ini adalah LayarPro — aplikasi perekam layar modern built entirely sebagai Progressive Web App (PWA). Perhatikan design sistem konsisten dengan glass-morphism panels dan gradient accents."
+>"Ini adalah LayarPro - aplikasi perekam layar modern built entirely sebagai Progressive Web App (PWA). Perhatikan design sistem konsisten dengan glass-morphism panels dan gradient accents."
 
 **Actions:**
 1. Navigate ke deployed site URL
@@ -84,7 +84,7 @@ Open Chrome (recommended for best WebRTC support):
 - Click "Save Settings"
 
 **Key Points:**
-> "Format dropdown sekarang functional — kalau browser support MP4 encoding, akan save as .mp4. Kalau tidak, auto-fallback ke WebM dengan toast notification."
+> "Format dropdown sekarang functional - kalau browser support MP4 encoding, akan save as .mp4. Kalau tidak, auto-fallback ke WebM dengan toast notification."
 
 ---
 
@@ -135,7 +135,7 @@ Open Chrome (recommended for best WebRTC support):
 5. Status badge kembali "Merekam"
 
 **Critical UX Detail:**
-> "Perhatikan visual difference — pause icon berubah jadi play icon. Ini affordance penting user tahu mereka sedang paused."
+> "Perhatikan visual difference - pause icon berubah jadi play icon. Ini affordance penting user tahu mereka sedang paused."
 
 ---
 
