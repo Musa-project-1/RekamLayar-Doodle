@@ -9,6 +9,7 @@ import { loadSettings } from "./settings.js";
 import { setupAutoSave } from "./media.js";
 import * as Media from "./media.js";
 import { get } from "./dom.js";
+import { TimerExtended } from "./timer-extended.js";
 
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
@@ -25,6 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Terapkan format tersimpan ke media engine.
     Media.setRecordFormat(State.settings.format || "webm");
+    
+    // Apply auto-save setting
+    State.durationLimitEnabled = State.settings.durationLimitEnabled ?? true;
 
     // Isi radio FPS dari pengaturan.
     const fps = State.settings.fps;
@@ -37,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupAutoSave();
     GDrive.init();
     registerServiceWorker();
-
+    
     console.log("[LayarPro] siap.");
   } catch (e) {
     console.error("[LayarPro] Gagal inisialisasi:", e);

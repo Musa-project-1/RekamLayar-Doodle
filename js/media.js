@@ -42,16 +42,35 @@ export function setRecordFormat(format) {
 }
 
 export async function captureSources({ useMic, useCamera, fps }) {
-  // Display selalu video-only. Audio ditangani terpisah lewat mic agar
-  // tidak terjadi konflik sumber audio dan agar mixing terkontrol penuh.
-  const displayStream = await navigator.mediaDevices.getDisplayMedia({
-    video: { frameRate: { ideal: Number(fps) || 30 } },
-    audio: false
-  });
-
+  // Clear previous streams.
+  stopAllTracks();
+  
+  // Display capture dengan system audio (experimental) atau fallback ke mic.
+  let displayStream;
+  const fpsNumber = Number(fps) || 30;
+  
+  try {
+    // Attempt to capture system audio first (requires enable-unsafe-unsecure-media-policies).
+    displayStream = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: { ideal: fpsNumber } },
+      audio: true // System audio capture
+    });
+    State.audioSourceType = 'system';
+  } catch (err) {
+    console.warn("System audio not available, falling back to microphone:", err);
+    State.audioSourceType = 'none';
+    
+    // Fallback: no system audio in this call, handle mic separately.
+    displayStream = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: { ideal: fpsNumber } },
+      audio: false
+    });
+  }
+  
   State.displayStream = displayStream;
-
-  if (useMic) {
+  
+  // Mic handling: if user requested mic AND system audio wasn't available.
+  if (useMic && !displayStream.getAudioTracks().length) {
     try {
       const voiceStream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -61,12 +80,28 @@ export async function captureSources({ useMic, useCamera, fps }) {
         }
       });
       State.voiceStream = voiceStream;
+      State.audioSourceType = 'mic';
     } catch (err) {
-      showToast("Mikrofon tidak dapat diakses: " + err.message);
+      console.log("Microphone access denied or unavailable:", err.message);
       State.useMic = false;
     }
+  } else if (useMic && displayStream.getAudioTracks().length) {
+    // System audio captured successfully, but user still might want additional mic input.
+    try {
+      const voiceStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+      State.voiceStream = voiceStream;
+      // If both system audio and mic are available, we keep both.
+    } catch (err) {
+      console.log("Additional microphone not available:", err.message);
+    }
   }
-
+  
   if (useCamera) {
     try {
       const cameraStream = await navigator.mediaDevices.getUserMedia({
@@ -75,11 +110,11 @@ export async function captureSources({ useMic, useCamera, fps }) {
       });
       State.cameraStream = cameraStream;
     } catch (err) {
-      showToast("Webcam tidak dapat diakses: " + err.message);
+      console.log("Webcam access denied or unavailable:", err.message);
       State.useCamera = false;
     }
   }
-
+  
   return displayStream;
 }
 

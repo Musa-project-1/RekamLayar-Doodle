@@ -55,3 +55,8 @@ export const SUPPORTED_FORMATS = Object.keys(FORMAT_CONFIG);
 // Tetap dipertahankan untuk kompatibilitas (default webm).
 export const MIME_TYPES = FORMAT_CONFIG.webm.mimeTypes;
 export const RECORD_EXTENSION = FORMAT_CONFIG.webm.extension;
+
+// Durasi maksimum rekaman dalam milidetik (60 menit).
+export const MAX_DURATION_MS = 60 * 60 * 1000;
+// Warning threshold dalam milidetik (15, 30, 45 menit).
+export const WARNING_THRESHOLDS = [15, 30, 45]; // menit

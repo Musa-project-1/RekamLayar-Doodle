@@ -26,8 +26,14 @@ export const State = {
     resolution: "default",
     fps: "30",
     countdown: "3",
-    format: "webm"
-  }
+    format: "webm",
+    autoSave: true
+  },
+  // Audio source type: 'system', 'mic', atau 'none'.
+  audioSourceType: 'none',
+  // Durasi limit tracking.
+  durationLimitEnabled: true,
+  startRecordingTime: 0,
 };
 
 export const DragState = {

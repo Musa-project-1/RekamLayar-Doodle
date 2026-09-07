@@ -7,7 +7,8 @@ const DEFAULTS = {
   resolution: "default",
   fps: "30",
   countdown: "3",
-  format: "webm"
+  format: "webm",
+  autoSave: true
 };
 
 function safeGet(key, fallback) {

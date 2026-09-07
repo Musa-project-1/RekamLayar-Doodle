@@ -3,7 +3,7 @@
 // ============================================================
 import { State } from "./state.js";
 import { get } from "./dom.js";
-import { Timer, runCountdown } from "./timer.js";
+import { Timer, runCountdown, TimerExtended } from "./timer.js";
 import * as Media from "./media.js";
 import { GDrive } from "./gdrive.js";
 import { setupNotesDrag, setupCamDrag } from "./drag.js";
@@ -246,12 +246,22 @@ export function setupEventListeners() {
   // ---- Keyboard shortcuts ----
   document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    const key = e.key.toLowerCase();
     if (e.key === " " && !recordingInProgress) {
       e.preventDefault();
       d("btn-start")?.click();
-    } else if (e.key.toLowerCase() === "s" && recordingInProgress) {
+    } else if (key === "s" && recordingInProgress) {
       e.preventDefault();
       d("btn-stop")?.click();
+    } else if (key === "p" && recordingInProgress) {
+      e.preventDefault();
+      d("btn-pause")?.click();
+    } else if (key === "m") {
+      e.preventDefault();
+      d("toggle-mic")?.click();
+    } else if (key === "c") {
+      e.preventDefault();
+      d("toggle-camera")?.click();
     }
   });
 
