@@ -18,6 +18,10 @@ export const State = {
   startTime: 0,
   elapsedTime: 0,
   timerInterval: null,
+  // Region crop: koordinat relatif (0-1) area yang direkam.
+  // null = full screen (default). {x, y, w, h} = area relatif ke video.
+  cropRegion: null,
+  cropMode: false,
   autoStopTimeout: null,
   confirmActionCallback: null,
   gdriveAccessToken: null,

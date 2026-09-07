@@ -4,6 +4,7 @@
 import { State } from "./state.js";
 import { initDom } from "./dom.js";
 import { setupEventListeners, initWatermarkUI } from "./events.js";
+import { setupCropSelector } from "./crop.js";
 import { GDrive } from "./gdrive.js";
 import { loadSettings } from "./settings.js";
 import { setupAutoSave } from "./media.js";
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupEventListeners();
     initWatermarkUI();
+    setupCropSelector();
     setupAutoSave();
     GDrive.init();
     registerServiceWorker();

@@ -285,6 +285,8 @@ function setRecordingUI(active) {
   get("btn-start")?.classList.toggle("hidden", active);
   get("btn-pause")?.classList.toggle("hidden", !active);
   get("btn-stop")?.classList.toggle("hidden", !active);
+  // Crop tool hanya relevan saat merekam.
+  get("btn-crop-tool")?.classList.toggle("hidden", !active);
 }
 
 function bindSettingsSave() {

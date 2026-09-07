@@ -11,7 +11,7 @@
 import { State, AudioState, releaseFinalBlob } from "./state.js";
 import { getFormatConfig } from "./config.js";
 import { get } from "./dom.js";
-import { formatBytes, sanitizeFilename, timestampString } from "./utils.js";
+import { computeCropSource, formatBytes, sanitizeFilename, timestampString } from "./utils.js";
 import { showToast } from "./ui.js";
 
 // MIME type + extension aktif untuk sesi ini (ditentukan oleh setting format).
@@ -188,9 +188,16 @@ export function buildComposite(videoElement) {
   if (State.cameraStream) camVideo.play().catch(() => {});
 
   const draw = () => {
-    canvas.width = displayVideo.videoWidth || 1280;
-    canvas.height = displayVideo.videoHeight || 720;
-    ctx.drawImage(displayVideo, 0, 0, canvas.width, canvas.height);
+    const fullW = displayVideo.videoWidth || 1280;
+    const fullH = displayVideo.videoHeight || 720;
+
+    // Tentukan area source yang akan digambar (crop region).
+    const { sx, sy, sw, sh } = computeCropSource(State.cropRegion, fullW, fullH);
+
+    // Canvas selalu seukuran area yang dipilih (crop) atau full screen.
+    canvas.width = sw;
+    canvas.height = sh;
+    ctx.drawImage(displayVideo, sx, sy, sw, sh, 0, 0, sw, sh);
 
     if (State.cameraStream && camVideo.videoWidth) {
       const scale = 0.22;

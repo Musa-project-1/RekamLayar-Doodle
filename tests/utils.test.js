@@ -5,7 +5,8 @@ import {
   sanitizeFilename,
   timestampString,
   escapeHtml,
-  sleep
+  sleep,
+  computeCropSource
 } from "../js/utils.js";
 
 describe("formatBytes", () => {
@@ -96,5 +97,38 @@ describe("sleep", () => {
     const start = Date.now();
     await sleep(20);
     expect(Date.now() - start).toBeGreaterThanOrEqual(15);
+  });
+});
+
+describe("computeCropSource", () => {
+  it("full screen saat cropRegion null", () => {
+    expect(computeCropSource(null, 1920, 1080)).toEqual({ sx: 0, sy: 0, sw: 1920, sh: 1080 });
+  });
+
+  it("menghitung crop region relatif dengan benar", () => {
+    // Crop 50% dari kiri, 50% lebar, 25% dari atas, 50% tinggi
+    const region = { x: 0.5, y: 0.25, w: 0.5, h: 0.5 };
+    expect(computeCropSource(region, 1920, 1080)).toEqual({ sx: 960, sy: 270, sw: 960, sh: 540 });
+  });
+
+  it("meng-clamp nilai yang melebihi batas video", () => {
+    // Region melebihi kanan & bawah
+    const region = { x: 0.9, y: 0.9, w: 0.5, h: 0.5 };
+    const result = computeCropSource(region, 1000, 1000);
+    expect(result.sx).toBe(900);
+    expect(result.sy).toBe(900);
+    expect(result.sw).toBe(100); // 1000 - 900 = 100
+    expect(result.sh).toBe(100);
+  });
+
+  it("menjaga dimensi minimal 1px", () => {
+    const region = { x: 0.99, y: 0.99, w: 0.001, h: 0.001 };
+    const result = computeCropSource(region, 100, 100);
+    expect(result.sw).toBeGreaterThanOrEqual(1);
+    expect(result.sh).toBeGreaterThanOrEqual(1);
+  });
+
+  it("full screen saat dimensi video 0", () => {
+    expect(computeCropSource(null, 0, 0)).toEqual({ sx: 0, sy: 0, sw: 0, sh: 0 });
   });
 });
