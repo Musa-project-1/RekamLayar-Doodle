@@ -23,6 +23,9 @@ export const State = {
   // null = full screen (default). {x, y, w, h} = area relatif ke video.
   cropRegion: null,
   cropMode: false,
+  // Mode perekaman: 'screen' (rekam layar) atau 'camera' (perekam kamera/mobile fallback)
+  recordingMode: "screen",
+  isMobile: false,
   autoStopTimeout: null,
   confirmActionCallback: null,
   gdriveAccessToken: null,

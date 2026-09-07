@@ -26,6 +26,7 @@
 | P1-4 | Region Crop / Zoom | ✅ DONE | `crop.js` dengan overlay seleksi, 5 presets aspect ratio |
 | P1-5 | Trimming Tool (Pasca-Rekam) | ✅ DONE | `trimmer.js` pemotong rentang video dengan pratinjau & reset asli |
 | P1-6 | Live Doodle / Anotasi Layar | ✅ DONE | `doodle.js` kuas, stabilo, panah, kotak & terekam langsung ke video |
+| P1-7 | Mobile Detection & Camera Fallback | ✅ DONE | `mobile.js` edukasi pembatasan OS seluler + mode rekam kamera otomatis |
 | C3 | Perbaikan Jeda (Pause Behavior) | ✅ DONE | Mute audio tracks saat jeda, visual banner di kanvas & badge amber |
 
 ### Keyboard & Accessibility
@@ -39,7 +40,7 @@
 ### Quality & Testing
 | ID | Item | Status | Keterangan |
 |----|------|--------|------------|
-| M1 | Unit test (Vitest) | ✅ DONE | 47 test (utils, settings, trimmer, crop math, doodle) |
+| M1 | Unit test (Vitest) | ✅ DONE | 54 test (utils, settings, trimmer, crop math, doodle, mobile) |
 | M2 | DRY `escapeHtml` | ✅ DONE | Sentralisasi di `utils.js` |
 | - | CI/CD pipeline | ✅ DONE | GitHub Actions: lint → test → build CSS |
 

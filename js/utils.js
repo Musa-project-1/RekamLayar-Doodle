@@ -59,6 +59,22 @@ function computeCropSource(cropRegion, fullW, fullH) {
   return { sx, sy, sw: Math.max(1, sw), sh: Math.max(1, sh) };
 }
 
+// Cek apakah browser mendukung Web API getDisplayMedia (perekaman layar)
+function isDisplayMediaSupported() {
+  return typeof navigator !== "undefined" &&
+    Boolean(navigator.mediaDevices && typeof navigator.mediaDevices.getDisplayMedia === "function");
+}
+
+// Deteksi apakah pengguna mengakses dari perangkat seluler (smartphone / tablet)
+function isMobileDevice() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  const isTouchDevice = typeof navigator.maxTouchPoints === "number" && navigator.maxTouchPoints > 1;
+  const isNarrowScreen = typeof window !== "undefined" && window.innerWidth <= 820;
+  return isMobileUA || (isTouchDevice && isNarrowScreen);
+}
+
 export {
   sleep,
   formatBytes,
@@ -66,5 +82,7 @@ export {
   sanitizeFilename,
   timestampString,
   escapeHtml,
-  computeCropSource
+  computeCropSource,
+  isDisplayMediaSupported,
+  isMobileDevice
 };

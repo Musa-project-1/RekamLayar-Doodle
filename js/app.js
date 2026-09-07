@@ -7,6 +7,7 @@ import { setupEventListeners, initWatermarkUI } from "./events.js";
 import { setupCropSelector } from "./crop.js";
 import { setupTrimmerUI } from "./trimmer.js";
 import { setupDoodle } from "./doodle.js";
+import { setupMobileSupport } from "./mobile.js";
 import { GDrive } from "./gdrive.js";
 import { loadSettings } from "./settings.js";
 import { setupAutoSave } from "./media.js";
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCropSelector();
     setupTrimmerUI();
     setupDoodle();
+    setupMobileSupport();
     setupAutoSave();
     GDrive.init();
     registerServiceWorker();

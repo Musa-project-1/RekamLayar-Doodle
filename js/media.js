@@ -14,6 +14,7 @@ import { get } from "./dom.js";
 import { computeCropSource, formatBytes, sanitizeFilename, timestampString } from "./utils.js";
 import { showToast } from "./ui.js";
 import { renderDoodleToRecording } from "./doodle.js";
+import { captureCameraSource } from "./mobile.js";
 
 // MIME type + extension aktif untuk sesi ini (ditentukan oleh setting format).
 let activeFormat = "webm";
@@ -45,10 +46,16 @@ export function setRecordFormat(format) {
 export async function captureSources({ useMic, useCamera, fps }) {
   // Clear previous streams.
   stopAllTracks();
-  
+
+  const fpsNumber = Number(fps) || 30;
+
+  // Mode kamera otomatis saat di ponsel atau saat getDisplayMedia tidak didukung
+  if (State.recordingMode === "camera" || typeof navigator.mediaDevices?.getDisplayMedia !== "function") {
+    return captureCameraSource({ fps: fpsNumber });
+  }
+
   // Display capture dengan system audio (experimental) atau fallback ke mic.
   let displayStream;
-  const fpsNumber = Number(fps) || 30;
   
   try {
     // Attempt to capture system audio first (requires enable-unsafe-unsecure-media-policies).

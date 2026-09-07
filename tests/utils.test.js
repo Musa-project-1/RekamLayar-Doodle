@@ -6,7 +6,9 @@ import {
   timestampString,
   escapeHtml,
   sleep,
-  computeCropSource
+  computeCropSource,
+  isDisplayMediaSupported,
+  isMobileDevice
 } from "../js/utils.js";
 
 describe("formatBytes", () => {
@@ -130,5 +132,19 @@ describe("computeCropSource", () => {
 
   it("full screen saat dimensi video 0", () => {
     expect(computeCropSource(null, 0, 0)).toEqual({ sx: 0, sy: 0, sw: 0, sh: 0 });
+  });
+});
+
+describe("isDisplayMediaSupported", () => {
+  it("mengembalikan boolean ketersediaan getDisplayMedia", () => {
+    const res = isDisplayMediaSupported();
+    expect(typeof res).toBe("boolean");
+  });
+});
+
+describe("isMobileDevice", () => {
+  it("mengembalikan boolean status perangkat", () => {
+    const res = isMobileDevice();
+    expect(typeof res).toBe("boolean");
   });
 });
