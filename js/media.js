@@ -13,6 +13,7 @@ import { getFormatConfig } from "./config.js";
 import { get } from "./dom.js";
 import { computeCropSource, formatBytes, sanitizeFilename, timestampString } from "./utils.js";
 import { showToast } from "./ui.js";
+import { renderDoodleToRecording } from "./doodle.js";
 
 // MIME type + extension aktif untuk sesi ini (ditentukan oleh setting format).
 let activeFormat = "webm";
@@ -218,6 +219,9 @@ export function buildComposite(videoElement) {
       ctx.drawImage(camVideo, x, y, w, h);
       ctx.restore();
     }
+
+    // Coretan anotasi layar real-time (Doodle).
+    renderDoodleToRecording(ctx, canvas.width, canvas.height);
 
     // Watermark overlay (branding) - digambar paling akhir agar selalu di atas.
     drawWatermark(ctx, canvas.width, canvas.height);

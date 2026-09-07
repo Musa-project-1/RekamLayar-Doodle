@@ -145,6 +145,9 @@
                 <div class="relative bg-[#111A2B] rounded-3xl aspect-video border border-white/5 overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] group ring-1 ring-white/10">
                     <video id="video-preview" class="w-full h-full object-contain bg-black absolute inset-0" autoplay muted playsinline></video>
                     
+                    <!-- Kanvas Anotasi & Coret Layar (Doodle) -->
+                    <canvas id="doodle-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-[21]"></canvas>
+                    
                     <div id="no-video-overlay" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-10 bg-slate-900/40 backdrop-blur-[2px]">
                         <div class="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-5 shadow-inner animate-[bounce_2s_infinite]">
                             <i class="fa-solid fa-display text-4xl text-slate-500"></i>
@@ -164,6 +167,9 @@
 
                     <!-- Floating Tools Dock -->
                     <div class="absolute right-5 top-1/2 transform -translate-y-1/2 bg-slate-900/70 backdrop-blur-xl border border-white/10 p-1.5 rounded-full flex flex-col gap-1.5 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-2xl">
+                        <button id="btn-doodle" class="w-10 h-10 rounded-full text-slate-300 hover:bg-white/10 hover:text-white transition-colors flex items-center justify-center" title="Anotasi & Coret Layar (Doodle)" aria-label="Anotasi & Coret Layar">
+                            <i class="fa-solid fa-pen-nib text-sm"></i>
+                        </button>
                         <button id="btn-screenshot" class="w-10 h-10 rounded-full text-slate-300 hover:bg-white/10 hover:text-white transition-colors flex items-center justify-center" title="Tangkapan Layar">
                             <i class="fa-solid fa-camera text-sm"></i>
                         </button>
@@ -173,6 +179,51 @@
                         <button id="btn-pip" class="w-10 h-10 rounded-full text-slate-300 hover:bg-white/10 hover:text-white transition-colors flex items-center justify-center" title="Picture-in-Picture">
                             <i class="fa-solid fa-clone text-sm"></i>
                         </button>
+                    </div>
+
+                    <!-- Floating Doodle Toolbar -->
+                    <div id="doodle-toolbar" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/90 backdrop-blur-2xl border border-white/15 px-4 py-2 rounded-2xl shadow-2xl z-[35] hidden items-center gap-3">
+                        <div class="flex items-center gap-1 bg-white/5 p-1 rounded-xl">
+                            <button id="tool-pen" class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs transition-colors" title="Pulpen / Kuas Bebas">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button id="tool-highlighter" class="w-8 h-8 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-xs transition-colors" title="Stabilo / Highlighter">
+                                <i class="fa-solid fa-highlighter"></i>
+                            </button>
+                            <button id="tool-arrow" class="w-8 h-8 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-xs transition-colors" title="Panah Penunjuk">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button id="tool-rect" class="w-8 h-8 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-xs transition-colors" title="Kotak / Bingkai">
+                                <i class="fa-regular fa-square"></i>
+                            </button>
+                        </div>
+
+                        <div class="w-px h-5 bg-slate-700/50"></div>
+
+                        <!-- Palet Warna -->
+                        <div class="flex items-center gap-1.5">
+                            <button id="doodle-color-EF4444" class="w-5 h-5 rounded-full bg-[#EF4444] border-2 border-white transition-transform hover:scale-110" title="Merah"></button>
+                            <button id="doodle-color-FBBF24" class="w-5 h-5 rounded-full bg-[#FBBF24] border-2 border-transparent transition-transform hover:scale-110" title="Kuning"></button>
+                            <button id="doodle-color-10B981" class="w-5 h-5 rounded-full bg-[#10B981] border-2 border-transparent transition-transform hover:scale-110" title="Hijau"></button>
+                            <button id="doodle-color-38BDF8" class="w-5 h-5 rounded-full bg-[#38BDF8] border-2 border-transparent transition-transform hover:scale-110" title="Biru"></button>
+                            <button id="doodle-color-A78BFA" class="w-5 h-5 rounded-full bg-[#A78BFA] border-2 border-transparent transition-transform hover:scale-110" title="Ungu"></button>
+                            <button id="doodle-color-FFFFFF" class="w-5 h-5 rounded-full bg-[#FFFFFF] border-2 border-transparent transition-transform hover:scale-110" title="Putih"></button>
+                        </div>
+
+                        <div class="w-px h-5 bg-slate-700/50"></div>
+
+                        <!-- Aksi Doodle: Undo, Clear, Close -->
+                        <div class="flex items-center gap-1">
+                            <button id="btn-doodle-undo" class="w-8 h-8 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-xs transition-colors" title="Urungkan Coretan (Undo)">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                            <button id="btn-doodle-clear" class="w-8 h-8 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 flex items-center justify-center text-xs transition-colors" title="Hapus Semua Coretan">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                            <button id="btn-doodle-close" class="w-8 h-8 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center text-xs transition-colors ml-1" title="Tutup Mode Doodle">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Draggable Floating Notepad -->
