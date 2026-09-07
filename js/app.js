@@ -23,7 +23,7 @@ function registerServiceWorker() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function bootstrap() {
   try {
     initDom();
     State.settings = { ...State.settings, ...loadSettings() };
@@ -55,4 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (e) {
     console.error("[LayarPro] Gagal inisialisasi:", e);
   }
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootstrap);
+} else {
+  bootstrap();
+}

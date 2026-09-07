@@ -189,10 +189,14 @@ export function buildComposite(videoElement) {
   displayVideo.srcObject = State.displayStream;
   displayVideo.autoplay = true;
   displayVideo.muted = true;
+  displayVideo.playsInline = true;
+  displayVideo.setAttribute("playsinline", "true");
 
   camVideo.srcObject = State.cameraStream || null;
   camVideo.autoplay = true;
   camVideo.muted = true;
+  camVideo.playsInline = true;
+  camVideo.setAttribute("playsinline", "true");
   if (State.cameraStream) camVideo.play().catch(() => {});
 
   const draw = () => {

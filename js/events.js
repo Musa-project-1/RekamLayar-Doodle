@@ -58,23 +58,31 @@ export function setupEventListeners() {
     const seconds = Number(settings.countdown) || 0;
 
     try {
-      if (seconds > 0) await runCountdown(seconds);
+      // 1. Minta izin kamera/layar SEGERA saat interaksi pengguna masih aktif
+      // Browser seluler (iOS/Android) memblokir akses jika tertunda oleh setTimeout/countdown
       await Media.captureSources({
         useMic: State.useMic,
         useCamera: State.useCamera,
         fps: settings.fps
       });
+
       const videoPreview = d("video-preview");
       Media.buildComposite(videoPreview);
+      get("no-video-overlay")?.classList.add("hidden");
+
+      // 2. Jalankan hitung mundur setelah video stream terpasang
+      if (seconds > 0) await runCountdown(seconds);
+
       Media.startRecording({ useMic: State.useMic, useCamera: State.useCamera });
       Media.startVisualizer();
       Timer.start();
       recordingInProgress = true;
       setRecordingUI(true);
       playBeep("start");
-      addNotification("Rekaman dimulai", "Layar sedang direkam.");
+      addNotification("Rekaman dimulai", "Perekaman sedang berlangsung.");
     } catch (err) {
       showToast("Gagal memulai rekaman: " + err.message);
+      setRecordingUI(false);
     }
   });
 
@@ -325,6 +333,7 @@ function setRecordingUI(active) {
   }
   if (timerContainer) timerContainer.classList.toggle("hidden", !active);
   if (preRecord) preRecord.classList.toggle("hidden", active);
+  get("no-video-overlay")?.classList.toggle("hidden", active);
   get("btn-start")?.classList.toggle("hidden", active);
   get("btn-pause")?.classList.toggle("hidden", !active);
   get("btn-stop")?.classList.toggle("hidden", !active);

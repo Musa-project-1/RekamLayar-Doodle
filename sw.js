@@ -1,7 +1,7 @@
 // ============================================================
 // sw.js - Service worker untuk offline-first (PWA)
 // ============================================================
-const CACHE_NAME = "layarpro-v1";
+const CACHE_NAME = "layarpro-v3";
 const PRECACHE = [
   "./",
   "./index.html",
@@ -14,12 +14,20 @@ const PRECACHE = [
   "./js/ui.js",
   "./js/settings.js",
   "./js/timer.js",
+  "./js/timer-extended.js",
   "./js/media.js",
   "./js/gdrive.js",
   "./js/drag.js",
+  "./js/crop.js",
+  "./js/trimmer.js",
+  "./js/doodle.js",
+  "./js/mobile.js",
   "./js/history.js",
   "./js/events.js",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./icons/icon.svg",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
 ];
 
 self.addEventListener("install", (e) => {
@@ -49,7 +57,12 @@ self.addEventListener("fetch", (e) => {
         const clone = res.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
         return res;
-      }).catch(() => caches.match("./index.html"));
+      }).catch(() => {
+        // HANYA kembalikan index.html jika request adalah navigasi halaman utama!
+        if (e.request.destination === "document" || e.request.mode === "navigate") {
+          return caches.match("./index.html");
+        }
+      });
     })
   );
 });
