@@ -10,6 +10,7 @@ export const State = {
   mediaRecorder: null,
   recordedChunks: [],
   finalBlob: null,        // Blob final (bukan hanya URL) agar tidak ada kebocoran referensi
+  originalBlob: null,     // Backup blob sebelum trimming
   finalBlobURL: null,
   finalBlobSize: "0 MB",
   useMic: false,
@@ -84,5 +85,6 @@ export function releaseFinalBlob() {
     State.finalBlobURL = null;
   }
   State.finalBlob = null;
+  State.originalBlob = null;
   State.recordedChunks = [];
 }

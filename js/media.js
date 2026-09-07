@@ -119,53 +119,53 @@ export async function captureSources({ useMic, useCamera, fps }) {
 }
 
 // Menggambar watermark (branding text) pada canvas composite.
-// Mendukung 4 posisi & opacity yang dapat dikonfigurasi di settings.
 function drawWatermark(ctx, width, height) {
   const wm = State.settings.watermark;
   if (!wm || !wm.enabled || !wm.text) return;
 
-  const text = wm.text;
-  const fontSize = wm.fontSize || 24;
-  const opacity = Math.min(1, Math.max(0, wm.opacity ?? 0.5));
-  const padding = Math.round(width * 0.02) || 20;
-
+  const text = wm.text, fontSize = wm.fontSize || 24, padding = Math.round(width * 0.02) || 20;
   ctx.save();
-  ctx.globalAlpha = opacity;
+  ctx.globalAlpha = Math.min(1, Math.max(0, wm.opacity ?? 0.5));
   ctx.font = `600 ${fontSize}px 'Segoe UI', system-ui, sans-serif`;
   ctx.textBaseline = "middle";
   ctx.fillStyle = "#ffffff";
 
-  // Ukur teks untuk penempatan yang akurat.
-  const textWidth = ctx.measureText(text).width;
-  let x, y;
+  const tw = ctx.measureText(text).width;
+  const isRight = (wm.position || "bottom-right").includes("right");
+  const isTop = (wm.position || "bottom-right").includes("top");
+  const x = isRight ? width - tw - padding : padding;
+  const y = isTop ? padding : height - padding;
 
-  switch (wm.position) {
-    case "top-left":
-      x = padding;
-      y = padding;
-      break;
-    case "top-right":
-      x = width - textWidth - padding;
-      y = padding;
-      break;
-    case "bottom-left":
-      x = padding;
-      y = height - padding;
-      break;
-    case "bottom-right":
-    default:
-      x = width - textWidth - padding;
-      y = height - padding;
-      break;
-  }
-
-  // Subtle shadow agar teks tetap terbaca di latar terang/gelap.
   ctx.shadowColor = "rgba(0,0,0,0.6)";
   ctx.shadowBlur = 8;
   ctx.shadowOffsetX = 2;
   ctx.shadowOffsetY = 2;
-
   ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+// Banner visual saat perekaman sedang dijeda (C3 fix).
+function drawPauseBanner(ctx, width, height) {
+  ctx.save();
+  ctx.fillStyle = "rgba(11, 17, 32, 0.7)";
+  ctx.fillRect(0, 0, width, height);
+
+  const bw = Math.min(300, width * 0.7), bh = 56;
+  const bx = (width - bw) / 2, by = (height - bh) / 2;
+
+  ctx.fillStyle = "rgba(17, 26, 43, 0.95)";
+  ctx.strokeStyle = "rgba(245, 158, 11, 0.8)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(bx, by, bw, bh, 14);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = "#FBBF24";
+  ctx.font = "600 16px 'Inter', system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("PAUSED - REKAMAN DIJEDA", width / 2, height / 2);
   ctx.restore();
 }
 
@@ -222,6 +222,11 @@ export function buildComposite(videoElement) {
     // Watermark overlay (branding) - digambar paling akhir agar selalu di atas.
     drawWatermark(ctx, canvas.width, canvas.height);
 
+    // Banner visual saat perekaman sedang dijeda (C3 fix).
+    if (State.isPaused) {
+      drawPauseBanner(ctx, canvas.width, canvas.height);
+    }
+
     requestAnimationFrame(draw);
   };
 
@@ -276,6 +281,7 @@ function finalizeBlob() {
     type: State.mediaRecorder?.mimeType || "video/webm"
   });
   State.finalBlob = blob;
+  State.originalBlob = blob; // Backup untuk fitur reset potongan video (trimmer)
   State.recordedChunks = []; // bebaskan referensi chunks (anti memory leak)
   State.finalBlobURL = URL.createObjectURL(blob);
   State.finalBlobSize = formatBytes(blob.size);
@@ -303,11 +309,24 @@ export function stopRecording() {
 export function pauseRecording() {
   if (State.mediaRecorder && State.mediaRecorder.state === "recording") {
     State.mediaRecorder.pause();
+    // Bungkam track audio selama pause agar tidak bocor ke rekaman
+    if (State.voiceStream) {
+      State.voiceStream.getAudioTracks().forEach((t) => { t.enabled = false; });
+    }
+    if (State.displayStream) {
+      State.displayStream.getAudioTracks().forEach((t) => { t.enabled = false; });
+    }
   }
 }
 
 export function resumeRecording() {
   if (State.mediaRecorder && State.mediaRecorder.state === "paused") {
+    if (State.voiceStream && State.useMic) {
+      State.voiceStream.getAudioTracks().forEach((t) => { t.enabled = true; });
+    }
+    if (State.displayStream) {
+      State.displayStream.getAudioTracks().forEach((t) => { t.enabled = true; });
+    }
     State.mediaRecorder.resume();
   }
 }

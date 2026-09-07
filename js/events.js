@@ -86,11 +86,13 @@ export function setupEventListeners() {
       Timer.pause();
       State.isPaused = true;
       playBeep("stop");
+      updatePauseUI(true);
     } else {
       Media.resumeRecording();
       Timer.resume();
       State.isPaused = false;
       playBeep("start");
+      updatePauseUI(false);
     }
     const icon = d("btn-pause")?.querySelector("i");
     if (icon) icon.className = State.isPaused
@@ -287,6 +289,17 @@ function setRecordingUI(active) {
   get("btn-stop")?.classList.toggle("hidden", !active);
   // Crop tool hanya relevan saat merekam.
   get("btn-crop-tool")?.classList.toggle("hidden", !active);
+}
+
+function updatePauseUI(isPaused) {
+  const status = get("status-badge");
+  const indicator = get("status-indicator");
+  if (status) status.textContent = isPaused ? "Dijeda" : "Merekam";
+  if (indicator) {
+    indicator.className = isPaused
+      ? "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"
+      : "w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
+  }
 }
 
 function bindSettingsSave() {
