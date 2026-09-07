@@ -1,0 +1,14 @@
+{
+  "name": "layarpro",
+  "version": "2.0.0",
+  "description": "LayarPro - Perekam layar dan rapat, offline-first dan PWA capable.",
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/input.css -o ./dist/styles.css --minify",
+    "watch:css": "tailwindcss -i ./css/input.css -o ./dist/styles.css --watch",
+    "build": "npm run build:css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.13"
+  }
+}

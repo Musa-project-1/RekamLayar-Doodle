@@ -1,0 +1,41 @@
+// ============================================================
+// app.js - Bootstrap aplikasi (entry point)
+// ============================================================
+import { State } from "./state.js";
+import { initDom } from "./dom.js";
+import { setupEventListeners } from "./events.js";
+import { GDrive } from "./gdrive.js";
+import { loadSettings } from "./settings.js";
+import { setupAutoSave } from "./media.js";
+import { get } from "./dom.js";
+
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js").catch(() => {
+      /* offline mode gagal; tidak fatal */
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    initDom();
+    State.settings = { ...State.settings, ...loadSettings() };
+
+    // Isi radio FPS dari pengaturan.
+    const fps = State.settings.fps;
+    const radios = get("setFpsRadios") || [];
+    radios.forEach((r) => {
+      if (r.value === fps) r.checked = true;
+    });
+
+    setupEventListeners();
+    setupAutoSave();
+    GDrive.init();
+    registerServiceWorker();
+
+    console.log("[LayarPro] siap.");
+  } catch (e) {
+    console.error("[LayarPro] Gagal inisialisasi:", e);
+  }
+});

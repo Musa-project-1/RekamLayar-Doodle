@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   LayarPro - custom styles (dark theme elegan)
+   ============================================================ */
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0B1120;
+    background-image: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(99, 102, 241, 0.15), rgba(0, 0, 0, 0));
+    background-attachment: fixed;
+    color: #E2E8F0;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .btn-glow-primary {
+    background: linear-gradient(135deg, #5A5CE6, #4E50C9);
+    box-shadow: 0 0 15px rgba(90, 92, 230, 0.35);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .btn-glow-primary:hover {
+    background: linear-gradient(135deg, #6A6CF5, #5A5CE6);
+    box-shadow: 0 0 25px rgba(90, 92, 230, 0.6);
+    transform: translateY(-1px);
+  }
+}
